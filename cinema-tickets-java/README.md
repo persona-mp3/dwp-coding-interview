@@ -1,5 +1,5 @@
 ## Cinema Tickets Application
-To run the application, make sure you have at least java 21 installed. 
+To run the application, make sure you have at least java 21 installed.
 
 ## Pre-requsites
 - Java 21 or above
