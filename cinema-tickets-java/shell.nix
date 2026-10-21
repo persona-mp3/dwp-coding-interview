@@ -5,7 +5,7 @@ let
     pre-commit
     google-java-format
   ];
-  
+
 in
 pkgs.mkShell {
   packages = myPackages;
@@ -14,4 +14,3 @@ pkgs.mkShell {
     exec fish
   '';
 }
-
