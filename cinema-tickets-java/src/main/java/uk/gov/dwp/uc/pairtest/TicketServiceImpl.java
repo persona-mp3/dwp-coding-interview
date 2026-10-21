@@ -7,15 +7,6 @@ import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
-// Provide a working implementation of a `TicketService` that:
-// - Considers the above objective, business rules, constraints & assumptions.
-// - Calculates the correct amount for the requested tickets and makes a payment request to the
-// `TicketPaymentService`.
-// - Calculates the correct no of seats to reserve and makes a seat reservation request to the
-// `SeatReservationService`.
-// - Rejects any invalid ticket purchase requests. It is up to you to identify what should be deemed
-// as an invalid purchase request
-
 public class TicketServiceImpl implements TicketService {
   /** Should only have private methods other than the one below. */
 
@@ -24,6 +15,7 @@ public class TicketServiceImpl implements TicketService {
 
   private final int CHILD_TICKET_PRICE = 15;
   private final int ADULT_TICKET_PRICE = 25;
+  private final int MAXIMUM_TICKET_PURCHASE_AMOUNT = 25;
 
   private final SeatReservationServiceImpl seatReservationService =
       new SeatReservationServiceImpl();
@@ -62,12 +54,15 @@ public class TicketServiceImpl implements TicketService {
     int totalSeatReservations = 0;
 
     for (TicketTypeRequest request : ticketTypeRequests) {
-      // TODO: Chcek if this is 0, will be invalid
       int noOfTickets = request.getNoOfTickets();
 
-      if (noOfTickets == 0) {
+      if (noOfTickets <= 0) {
         String errMsg =
-            String.format("Received an invalid ticket, with noOfTickets as 0, %s", request);
+            String.format("invalid number of tickets from request: %s", request.toString());
+        System.err.println(errMsg);
+        throw new InvalidPurchaseException();
+      } else if (noOfTickets > MAXIMUM_TICKET_PURCHASE_AMOUNT) {
+        String errMsg = String.format("maxium purchase amount reached for: ", request);
         System.err.println(errMsg);
         throw new InvalidPurchaseException();
       }
@@ -83,6 +78,10 @@ public class TicketServiceImpl implements TicketService {
         case Type.ADULT -> {
           totalPrice += noOfTickets * ADULT_TICKET_PRICE;
           totalSeatReservations += noOfTickets;
+        }
+        case null, default -> {
+          System.out.printf("expected a valid ticktetType got:", request.getTicketType());
+          throw new InvalidPurchaseException();
         }
       }
       ;

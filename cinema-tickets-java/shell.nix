@@ -6,7 +6,7 @@ let
     pre-commit
     google-java-format
   ];
-  
+
   # 2. Extract the package names and join them into a comma-separated string
   packageNames = pkgs.lib.strings.concatMapStringsSep ", " (p: p.name or p.pname) myPackages;
 in
@@ -16,8 +16,7 @@ pkgs.mkShell {
   shellHook = ''
     # 3. Interpolate the clean string directly into your message
     echo "nix shell started in $PWD with following packages: ${packageNames}"
-    
+
     exec fish
   '';
 }
-
