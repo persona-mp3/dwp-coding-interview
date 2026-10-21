@@ -52,7 +52,7 @@ You can assume:
 - The `SeatReservationService` implementation is an external provider with no
   defects. You do not need to worry about how the seat reservation algorithm
   works.
-  
+
 - The seat will always be reserved once a reservation request has been made to the `SeatReservationService`.
 
 ## Your Task
@@ -61,6 +61,3 @@ Provide a working implementation of a `TicketService` that:
 - Calculates the correct amount for the requested tickets and makes a payment request to the `TicketPaymentService`.
 - Calculates the correct no of seats to reserve and makes a seat reservation request to the `SeatReservationService`.
 - Rejects any invalid ticket purchase requests. It is up to you to identify what should be deemed as an invalid purchase request
-
-
-
