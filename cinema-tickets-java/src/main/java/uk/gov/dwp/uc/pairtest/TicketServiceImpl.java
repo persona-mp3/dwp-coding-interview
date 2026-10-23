@@ -29,10 +29,6 @@ public class TicketServiceImpl implements TicketService {
 	// requirments have it that a single purchase must not exceed 25 tickets
 	private final int MAXIMUM_TICKET_PURCHASE_AMOUNT = 25;
 
-	public int getMaximumTicketPurchaseAmount() {
-		return this.MAXIMUM_TICKET_PURCHASE_AMOUNT;
-	}
-
 	@Override
 	public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws InvalidPurchaseException {
 		if (accountId == null || accountId <= INVALID_ACCOUNT_ID) {
@@ -75,6 +71,10 @@ public class TicketServiceImpl implements TicketService {
 			throw new InvalidPurchaseException(errMsg);
 		}
 
+	}
+
+	public int getMaximumTicketPurchaseAmount() {
+		return this.MAXIMUM_TICKET_PURCHASE_AMOUNT;
 	}
 
 }

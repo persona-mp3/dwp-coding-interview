@@ -1,16 +1,16 @@
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+
 import org.junit.jupiter.api.BeforeEach;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
-
+import thirdparty.paymentgateway.TicketPaymentService;
+import thirdparty.seatbooking.SeatReservationService;
 import uk.gov.dwp.uc.pairtest.TicketServiceImpl;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
-
-import thirdparty.paymentgateway.TicketPaymentService;
-import thirdparty.seatbooking.SeatReservationService;
 
 class TicketServiceImplTest {
 	TicketPaymentService ticketPaymentService;
