@@ -15,11 +15,13 @@
 // 	private final int ADULT_TICKET_PRICE = 25;
 // 	private final int MAXIMUM_TICKET_PURCHASE_AMOUNT = 25;
 //
-// 	private final SeatReservationServiceImpl seatReservationService = new SeatReservationServiceImpl();
+// 	private final SeatReservationServiceImpl seatReservationService = new
+// SeatReservationServiceImpl();
 // 	private final TicketPaymentServiceImpl ticketPaymentService = new TicketPaymentServiceImpl();
 //
 // 	@Override
-// 	public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws InvalidPurchaseException {
+// 	public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests) throws
+// InvalidPurchaseException {
 // 		if (accountId <= INVALID_ACCOUNT_ID) {
 // 			throw new InvalidPurchaseException(String.format("invalid accountId: %d", accountId));
 // 		} ;
@@ -27,8 +29,10 @@
 // 		boolean requestContainsAdultTicket = Arrays.stream(ticketTypeRequests)
 // 				.anyMatch(request -> request.getTicketType().equals(Type.ADULT));
 //
-// 		boolean requestContainsInfantChildTicket = Arrays.stream(ticketTypeRequests).anyMatch(request -> {
-// 			return request.getTicketType().equals(Type.INFANT) || request.getTicketType().equals(Type.CHILD);
+// 		boolean requestContainsInfantChildTicket = Arrays.stream(ticketTypeRequests).anyMatch(request
+// -> {
+// 			return request.getTicketType().equals(Type.INFANT) ||
+// request.getTicketType().equals(Type.CHILD);
 // 		});
 //
 // 		// ticket requests with a child or infant must come with an adult ticket
@@ -68,7 +72,8 @@
 // 				totalSeatReservations += noOfTickets;
 // 			}
 // 			case null, default -> {
-// 				throw new InvalidPurchaseException(String.format("got unexpected TicketType. %s", request.getTicketType()));
+// 				throw new InvalidPurchaseException(String.format("got unexpected TicketType. %s",
+// request.getTicketType()));
 // 			}
 // 			};
 // 		} ;
@@ -76,7 +81,8 @@
 // 		seatReservationService.reserveSeat(accountId, totalSeatReservations);
 // 		ticketPaymentService.makePayment(accountId, totalPrice);
 //
-// 		String debugMsg = String.format("totalReservations: %d, totalPrice: %d\n", totalSeatReservations, totalPrice);
+// 		String debugMsg = String.format("totalReservations: %d, totalPrice: %d\n",
+// totalSeatReservations, totalPrice);
 // 		System.out.println(debugMsg);
 // 	}
 //

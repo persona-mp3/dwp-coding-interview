@@ -27,6 +27,8 @@ You will be assessed on:
 - Only a maximum of 25 tickets that can be purchased at a time.
 - Infants do not pay for a ticket and are not allocated a seat. They will be sitting on an Adult's lap.
 - Child and Infant tickets cannot be purchased without purchasing an Adult ticket.
+        Question: does that mean each infant and child must have an adult assigned to them? for each child/infant
+        must have an adult
 |   Ticket Type    |     Price   |
 | ---------------- | ----------- |
 |    INFANT        |    £0       |
