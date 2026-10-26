@@ -15,9 +15,7 @@ public class TicketServiceImpl implements TicketService {
     private final SeatReservationService seatReservationService;
     private final TicketPaymentService ticketPaymentService;
 
-    public TicketServiceImpl(
-            SeatReservationService seatReservationService,
-            TicketPaymentService ticketPaymentService) {
+    public TicketServiceImpl(SeatReservationService seatReservationService, TicketPaymentService ticketPaymentService) {
         this.seatReservationService = seatReservationService;
         this.ticketPaymentService = ticketPaymentService;
     }
@@ -39,8 +37,7 @@ public class TicketServiceImpl implements TicketService {
     public void purchaseTickets(Long accountId, TicketTypeRequest... ticketTypeRequests)
             throws InvalidPurchaseException {
         if (accountId == null || accountId <= INVALID_ACCOUNT_ID) {
-            throw new InvalidPurchaseException(
-                    String.format("Invalid account ID provided: %d", accountId));
+            throw new InvalidPurchaseException(String.format("Invalid account ID provided: %d", accountId));
         }
 
         TicketTypeRequest[] validatedTickets = validateTicketRequests(ticketTypeRequests);
@@ -54,38 +51,37 @@ public class TicketServiceImpl implements TicketService {
     }
 
     /**
-     * Returns an array of valid ticket requests by checking against the following rules:
+     * Returns an array of valid ticket requests by checking against the following
+     * rules:
      *
      * <ol>
-     *   <li>Total tickets purchased doesn't exceed {@link #MAXIMUM_TICKET_PURCHASE_AMOUNT}
-     *   <li>Child or infant tickets must have an adult ticket purchased
-     *   <li>No negative amount of tickets can be bought
+     * <li>Total tickets purchased doesn't exceed {@link #MAXIMUM_TICKET_PURCHASE_AMOUNT}
+     * <li>Child or infant tickets must have an adult ticket purchased
+     * <li>No negative amount of tickets can be bought
      * </ol>
      *
      * @param requests
      * @return TicketTypeRequest[]
      * @throws InvalidPurchaseException
      */
-    private TicketTypeRequest[] validateTicketRequests(TicketTypeRequest... requests)
-            throws InvalidPurchaseException {
+    private TicketTypeRequest[] validateTicketRequests(TicketTypeRequest... requests) throws InvalidPurchaseException {
         int totalTicketsPurchased = 0;
 
         for (TicketTypeRequest ticket : requests) {
             Type ticketType = ticket.getTicketType();
 
             switch (ticketType) {
-                case Type.ADULT, Type.CHILD, Type.INFANT -> {}
-                case null, default -> {
-                    throw new InvalidPurchaseException(
-                            String.format("invalid ticket type of: %s", ticketType));
-                }
+            case Type.ADULT, Type.CHILD, Type.INFANT -> {
+            }
+            case null, default -> {
+                throw new InvalidPurchaseException(String.format("invalid ticket type of: %s", ticketType));
+            }
             }
 
             int noOfTickets = ticket.getNoOfTickets();
             if (noOfTickets <= 0) {
                 throw new InvalidPurchaseException(
-                        String.format(
-                                "Cannot purchase less than 1 ticket. TicketRequest: %s", ticket));
+                        String.format("Cannot purchase less than 1 ticket. TicketRequest: %s", ticket));
             }
 
             totalTicketsPurchased += noOfTickets;
@@ -93,26 +89,18 @@ public class TicketServiceImpl implements TicketService {
 
         if (totalTicketsPurchased > MAXIMUM_TICKET_PURCHASE_AMOUNT) {
             throw new InvalidPurchaseException(
-                    String.format(
-                            "Cannot purchase more than %d tickets at once. You made %d purchases",
+                    String.format("Cannot purchase more than %d tickets at once. You made %d purchases",
                             MAXIMUM_TICKET_PURCHASE_AMOUNT, totalTicketsPurchased));
         }
 
         // check child or infant tickets(if any) are purchased with adult tickets
-        boolean hasAdultTickets =
-                Arrays.stream(requests).anyMatch(ticket -> ticket.getTicketType() == Type.ADULT);
+        boolean hasAdultTickets = Arrays.stream(requests).anyMatch(ticket -> ticket.getTicketType() == Type.ADULT);
 
-        boolean hasChildOrInfantTickets =
-                Arrays.stream(requests)
-                        .anyMatch(
-                                ticket ->
-                                        ticket.getTicketType() == Type.CHILD
-                                                || ticket.getTicketType() == Type.INFANT);
+        boolean hasChildOrInfantTickets = Arrays.stream(requests)
+                .anyMatch(ticket -> ticket.getTicketType() == Type.CHILD || ticket.getTicketType() == Type.INFANT);
 
         if (hasChildOrInfantTickets && !hasAdultTickets) {
-            String errMsg =
-                    String.format(
-                            "Cannot purchase children or infant tickets without an adult ticket");
+            String errMsg = String.format("Cannot purchase children or infant tickets without an adult ticket");
             throw new InvalidPurchaseException(errMsg);
         }
 
@@ -120,7 +108,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     /**
-     * Returns a map containing each ticket type mapped to the number of tickets bought.
+     * Returns a map containing each ticket type mapped to the number of tickets
+     * bought.
      *
      * @param ticketRequests
      * @return Map<Type, Integer>
@@ -139,22 +128,22 @@ public class TicketServiceImpl implements TicketService {
     }
 
     /**
-     * Calculates the total seats to reserve. It totals the number of tickets for <b>children</b>
-     * and <b>adults</b>, but excludes <b>infant</b> tickets. Infants are required to seat on the
-     * laps of adults.
+     * Calculates the total seats to reserve. It totals the number of tickets for
+     * <b>children</b> and <b>adults</b>, but excludes <b>infant</b> tickets.
+     * Infants are required to seat on the laps of adults.
      *
      * @param ticketSummary
      * @return
      */
     private int calculateTotalSeats(Map<Type, Integer> ticketSummary) {
-        return ticketSummary.getOrDefault(Type.CHILD, 0)
-                + ticketSummary.getOrDefault(Type.ADULT, 0);
+        return ticketSummary.getOrDefault(Type.CHILD, 0) + ticketSummary.getOrDefault(Type.ADULT, 0);
     }
 
     /**
-     * Calculates the total price for the request. It calculates the total amount to pay for each
-     * ticket type by multiplying the number of tickets purchased for a ticket by the <b>Types's</b>
-     * price. Infant ticket types are excluded as infant tickets are not paid for.
+     * Calculates the total price for the request. It calculates the total amount to
+     * pay for each ticket type by multiplying the number of tickets purchased for a
+     * ticket by the <b>Types's</b> price. Infant ticket types are excluded as
+     * infant tickets are not paid for.
      *
      * @param ticketSummary
      * @return
