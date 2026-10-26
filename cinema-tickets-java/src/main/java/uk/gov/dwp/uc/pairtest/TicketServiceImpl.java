@@ -19,14 +19,16 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	// According to the spec, any account ID greater than 0 is considered a valid
-	// account and can has sufficcient funds to make a purchase
+	// account and has sufficient funds to make a purchase
 	private final int INVALID_ACCOUNT_ID = 0;
 
-	// infant tickets are not paid for, they are requireed to sit on the laps of
+	// infant tickets are not paid for, they are required to sit on the laps of
 	// adults
 	private final int INFANT_TICKET_PRICE_POUNDS = 0;
 	private final int CHILD_TICKET_PRICE_POUNDS = 15;
 	private final int ADULT_TICKET_PRICE_POUNDS = 25;
+
+	// According to the spec, maximum ticket purchase for a single request is 25
 	private final int MAXIMUM_TICKET_PURCHASE_AMOUNT = 25;
 
 	@Override
