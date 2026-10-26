@@ -13,10 +13,9 @@ repos:
       - id: check-xml
       - id: detect-private-key
 
-  - repo: local
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.18.0
     hooks:
-      - id: google-java-format
-        name: google-java-format
-        entry: google-java-format --aosp --replace
-        language: system
-        files: \.java$
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']

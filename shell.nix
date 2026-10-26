@@ -3,7 +3,7 @@
 let
   myPackages = with pkgs; [
     pre-commit
-    google-java-format
+
   ];
 
 in
