@@ -23,7 +23,6 @@ public class TicketServiceImpl implements TicketService {
   /** requirements mention that an account id greater than 0 is valid */
   private final int INVALID_ACCOUNT_ID = 0;
 
-  // currency is pounds
   private final int CHILD_TICKET_PRICE_POUNDS = 15;
   private final int ADULT_TICKET_PRICE_POUNDS = 25;
 

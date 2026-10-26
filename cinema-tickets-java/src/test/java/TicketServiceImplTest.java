@@ -30,7 +30,6 @@ class TicketServiceImplTest {
     ticketService = new TicketServiceImpl(seatReservationService, ticketPaymentService);
   }
 
-
   @Test
   void makesCorrectPaymentAndSeatReservation() {
     // 2 adults @ £25 + 4 children @ £15 + 2 infants @ £0 = £110

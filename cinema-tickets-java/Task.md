@@ -1,18 +1,3 @@
-There are 3 types of tickets:
-- Infant -> $0
-- Child  -> $15
-- Adult  -> $25
-
-- Only a maximum of 25 tickets can be purchased at a single time
-- Infants don't pay for tickets, they seat on adult laps
-- Child and infant tickets cannot be purchased without an adult ticket
-
-
-
-- There is an existing `TicketPaymentService` responsible for taking payments.
-- There is an existing `SeatReservationService` responsible for reserving seats.
-
-
 ## Objective
 This is a coding exercise which will allow you to demonstrate how you code and your approach to a given problem.
 You will be assessed on:
@@ -27,12 +12,11 @@ You will be assessed on:
 - Only a maximum of 25 tickets that can be purchased at a time.
 - Infants do not pay for a ticket and are not allocated a seat. They will be sitting on an Adult's lap.
 - Child and Infant tickets cannot be purchased without purchasing an Adult ticket.
-        Question: does that mean each infant and child must have an adult assigned to them? for each child/infant
-        must have an adult
+
 |   Ticket Type    |     Price   |
 | ---------------- | ----------- |
 |    INFANT        |    £0       |
-|    CHILD         |    £15     |
+|    CHILD         |    £15      |
 |    ADULT         |    £25      |
 - There is an existing `TicketPaymentService` responsible for taking payments.
 - There is an existing `SeatReservationService` responsible for reserving seats.
