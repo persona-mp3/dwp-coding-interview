@@ -22,7 +22,7 @@ jobs:
       - name: Running tests
         run: |
           cd cinema-tickets-java/
-          echo "running unit tests"
+          echo "running unit tests" && pwd
           mvn test
         working-directory: cinema-tickets
 
