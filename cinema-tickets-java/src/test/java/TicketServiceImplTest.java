@@ -1,8 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import thirdparty.paymentgateway.TicketPaymentService;
@@ -30,42 +30,58 @@ class TicketServiceImplTest {
     ticketService = new TicketServiceImpl(seatReservationService, ticketPaymentService);
   }
 
+  // @Test
+  // void calculatesTotalPriceOfAllTickets() {
+  //   TicketTypeRequest[] requests = {
+  //     new TicketTypeRequest(Type.ADULT, 2),
+  //     new TicketTypeRequest(Type.INFANT, 2),
+  //     new TicketTypeRequest(Type.CHILD, 4)
+  //   };
+  //
+  //   int adultTicketPrice = ticketService.getAdultTicketPricePounds();
+  //   int childTicketPrice = ticketService.getChildTicketPricePounds();
+  //   int infantTicketPrice = ticketService.getInfantTicketPricePounds();
+  //
+  //   int expectedTotalPrice = 0;
+  //   int expectedTotalSeatsToAllocate = 0;
+  //   for (TicketTypeRequest ticket : requests) {
+  //     int noOfTickets = ticket.getNoOfTickets();
+  //     switch (ticket.getTicketType()) {
+  //       case Type.ADULT -> {
+  //         expectedTotalPrice += noOfTickets * adultTicketPrice;
+  //         expectedTotalSeatsToAllocate += noOfTickets;
+  //       }
+  //       case Type.CHILD -> {
+  //         expectedTotalPrice += noOfTickets * childTicketPrice;
+  //         expectedTotalSeatsToAllocate += noOfTickets;
+  //       }
+  //       case Type.INFANT -> {
+  //         expectedTotalPrice += noOfTickets * infantTicketPrice;
+  //       }
+  //     }
+  //   }
+  //
+  //   Map<Type, Integer> ticketSummary = ticketService.summariseTickets(requests);
+  //   int totalPrice = ticketService.calculateTotalPrice(ticketSummary);
+  //   int totalSeatsToAllocate = ticketService.calculateTotalSeats(ticketSummary);
+  //   assertEquals(expectedTotalPrice, totalPrice);
+  //   assertEquals(expectedTotalSeatsToAllocate, totalSeatsToAllocate);
+  // }
+
   @Test
-  void calculatesTotalPriceOfAllTickets() {
+  void makesCorrectPaymentAndSeatReservation() {
+    // 2 adults @ £25 + 4 children @ £15 + 2 infants @ £0 = £110
+    // seats: 2 adults + 4 children = 6 (infants sit on laps)
     TicketTypeRequest[] requests = {
       new TicketTypeRequest(Type.ADULT, 2),
-      new TicketTypeRequest(Type.INFANT, 2),
-      new TicketTypeRequest(Type.CHILD, 4)
+      new TicketTypeRequest(Type.CHILD, 4),
+      new TicketTypeRequest(Type.INFANT, 2)
     };
 
-    int adultTicketPrice = ticketService.getAdultTicketPricePounds();
-    int childTicketPrice = ticketService.getChildTicketPricePounds();
-    int infantTicketPrice = ticketService.getInfantTicketPricePounds();
+    ticketService.purchaseTickets(validAccountId, requests);
 
-    int expectedTotalPrice = 0;
-    int expectedTotalSeatsToAllocate = 0;
-    for (TicketTypeRequest ticket : requests) {
-      int noOfTickets = ticket.getNoOfTickets();
-      switch (ticket.getTicketType()) {
-        case Type.ADULT -> {
-          expectedTotalPrice += noOfTickets * adultTicketPrice;
-          expectedTotalSeatsToAllocate += noOfTickets;
-        }
-        case Type.CHILD -> {
-          expectedTotalPrice += noOfTickets * childTicketPrice;
-          expectedTotalSeatsToAllocate += noOfTickets;
-        }
-        case Type.INFANT -> {
-          expectedTotalPrice += noOfTickets * infantTicketPrice;
-        }
-      }
-    }
-
-    Map<Type, Integer> ticketSummary = ticketService.summariseTickets(requests);
-    int totalPrice = ticketService.calculateTotalPrice(ticketSummary);
-    int totalSeatsToAllocate = ticketService.calculateTotalSeats(ticketSummary);
-    assertEquals(expectedTotalPrice, totalPrice);
-    assertEquals(expectedTotalSeatsToAllocate, totalSeatsToAllocate);
+    verify(ticketPaymentService).makePayment(validAccountId, 110);
+    verify(seatReservationService).reserveSeat(validAccountId, 6);
   }
 
   @Test
