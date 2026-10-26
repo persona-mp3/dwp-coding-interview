@@ -84,6 +84,15 @@ class TicketServiceImplTest {
   }
 
   @Test
+  void rejectsInfantTicketWithoutAdult() {
+    TicketTypeRequest[] requests = {new TicketTypeRequest(Type.INFANT, 1)};
+
+    assertThrows(
+        InvalidPurchaseException.class,
+        () -> ticketService.purchaseTickets(validAccountId, requests));
+  }
+
+  @Test
   void throwsInvalidPurchaseExceptionWithZeroNumberOfTicketsPurchased() {
     TicketTypeRequest[] requests = {new TicketTypeRequest(null, 0)};
 
