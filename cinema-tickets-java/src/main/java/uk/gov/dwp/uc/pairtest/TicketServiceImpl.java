@@ -10,8 +10,8 @@ import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
 public class TicketServiceImpl implements TicketService {
-  private SeatReservationService seatReservationService;
-  private TicketPaymentService ticketPaymentService;
+  private final SeatReservationService seatReservationService;
+  private final TicketPaymentService ticketPaymentService;
 
   public TicketServiceImpl(
       SeatReservationService seatReservationService, TicketPaymentService ticketPaymentService) {
@@ -45,10 +45,9 @@ public class TicketServiceImpl implements TicketService {
     TicketTypeRequest[] validatedTickets = validateTicketRequests(ticketTypeRequests);
     Map<Type, Integer> ticketTotals = summariseTickets(validatedTickets);
 
-    int totalAmountToPay = calculateTotalSeats(ticketTotals);
-    int totalSeatsToAllocate = calculateTotalPrice(ticketTotals);
+    int totalSeatsToAllocate = calculateTotalSeats(ticketTotals);
+    int totalAmountToPay = calculateTotalPrice(ticketTotals);
 
-    System.out.printf("totalAmt: %d", totalAmountToPay, "totalReservs", totalSeatsToAllocate);
     seatReservationService.reserveSeat(accountId, totalSeatsToAllocate);
     ticketPaymentService.makePayment(accountId, totalAmountToPay);
   }
@@ -103,7 +102,7 @@ public class TicketServiceImpl implements TicketService {
     return requests;
   }
 
-  public Map<Type, Integer> summariseTickets(TicketTypeRequest... ticketRequests) {
+  private Map<Type, Integer> summariseTickets(TicketTypeRequest... ticketRequests) {
     Map<Type, Integer> ticketSummary = new EnumMap<>(Type.class);
 
     for (TicketTypeRequest ticket : ticketRequests) {
@@ -116,13 +115,13 @@ public class TicketServiceImpl implements TicketService {
     return ticketSummary;
   }
 
-  public int calculateTotalSeats(Map<Type, Integer> ticketSummary) {
-    return ticketSummary.get(Type.CHILD) + ticketSummary.get(Type.ADULT);
+  private int calculateTotalSeats(Map<Type, Integer> ticketSummary) {
+    return ticketSummary.getOrDefault(Type.CHILD, 0) + ticketSummary.getOrDefault(Type.ADULT, 0);
   }
 
-  public int calculateTotalPrice(Map<Type, Integer> ticketSummary) {
-    return (ticketSummary.get(Type.CHILD) * CHILD_TICKET_PRICE_POUNDS)
-        + (ticketSummary.get(Type.ADULT) * ADULT_TICKET_PRICE_POUNDS);
+  private int calculateTotalPrice(Map<Type, Integer> ticketSummary) {
+    return (ticketSummary.getOrDefault(Type.CHILD, 0) * CHILD_TICKET_PRICE_POUNDS)
+        + (ticketSummary.getOrDefault(Type.ADULT, 0) * ADULT_TICKET_PRICE_POUNDS);
   }
 
   public int getMaximumTicketPurchaseAmount() {
