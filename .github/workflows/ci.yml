@@ -24,5 +24,4 @@ jobs:
           cd cinema-tickets-java/
           echo "running unit tests" && pwd
           mvn test
-        working-directory: cinema-tickets
 
