@@ -1,4 +1,6 @@
 ## Cinema Tickets Application
+The solution lives inside the [cinema-tickets-java](./cinema-tickets-java) folder
+
 To run the application, make sure you have at least java 21 installed.
 
 ## The task
@@ -7,7 +9,6 @@ The task can be found at [Task.md](./cinema-tickets-java/Task.md)
 
 ## Pre-requsites
 - Java 21 or above
-- pre-commit 
 
 ### Clone the repository 
 ```bash 
